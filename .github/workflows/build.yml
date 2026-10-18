@@ -19,21 +19,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Make Gradlew Executable
-        run: chmod +x gradlew || true
-
-      - name: Build Debug APK
         run: |
-          # اگر فایل gradlew در پروژه نبود، از ابزار gradle پیش‌فرض لینوکس استفاده می‌شود
-          if [ -f "./gradlew" ]; then
-            ./gradlew assembleDebug
+          if [ -f "gradlew" ]; then
+            chmod +x gradlew
           else
             gradle wrapper
-            ./gradlew assembleDebug
+            chmod +x gradlew
           fi
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
