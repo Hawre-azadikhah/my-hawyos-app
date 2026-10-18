@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#050818" id="meta-theme-color">
+  <title>HAWY OS | داشبورد هوشمند دانشجویی هاوی</title>
+  
+  <!-- فونت وزیرمتن و آیکون‌های بوت‌استرپ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    :root {
+      --bg-main: #050818;
+      --bg-secondary: #0b112c;
+      --card-bg: rgba(15, 23, 54, 0.72);
+      --card-border: rgba(0, 229, 255, 0.18);
+      --glass-highlight: rgba(255, 255, 255, 0.05);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #00e5ff;
+      --accent-purple: #8a5cff;
+      --accent-pink: #ff2a85;
+      --accent-green: #00e676;
+      --accent-amber: #ffab00;
+      --shadow-glow: 0 8px 32px rgba(0, 229, 255, 0.12);
+      --input-bg: rgba(8, 13, 35, 0.85);
+      --header-bg: rgba(5, 8, 24, 0.85);
+      --modal-bg: #0c1330;
+    }
+
+    html.light-mode, body.light-mode, [data-theme="light"] {
+      --bg-main: #f0f5ff;
+      --bg-secondary: #e2ecff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(99, 102, 241, 0.22);
+      --glass-highlight: rgba(255, 255, 255, 0.7);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --accent-cyan: #0284c7;
+      --accent-purple: #6d28d9;
+      --accent-pink: #e11d48;
+      --accent-green: #059669;
+      --accent-amber: #d97706;
+      --shadow-glow: 0 8px 28px rgba(15, 23, 42, 0.08);
+      --input-bg: rgba(241, 245, 249, 0.95);
+      --header-bg: rgba(240, 245, 255, 0.88);
+      --modal-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Vazirmatn', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      position: relative;
+      padding-bottom: 90px;
+    }
+
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* هدر اصلی */
+    .top-header {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: var(--header-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-glow);
+      margin-bottom: 20px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.35);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .brand-wrap:hover .brand-logo {
+      transform: scale(1.06) rotate(-4deg);
+    }
+
+    .brand-titles h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+
+    .brand-titles p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-glass {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-glass:hover, .btn-glass:active {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary-neon {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #ffffff !important;
+      border: none;
+      box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+    }
+
+    /* کارت‌های شیشه‌ای */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow-glow);
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* بخش خوش‌آمدگویی و ساعت زنده */
+    .hud-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .hud-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .welcome-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .greeting-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .persian-date {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-clock-box {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      background: var(--input-bg);
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 14px;
+    }
+
+    .digital-clock {
+      font-size: 1.9rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--accent-cyan);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .day-progress-wrap {
+      margin-top: 8px;
+    }
+
+    .day-progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--input-bg);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      border-radius: 99px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    /* شمارنده معکوس کلاس بعدی */
+    .countdown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .badge-status {
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-upcoming {
+      background: rgba(0, 229, 255, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+    }
+
+    .badge-ongoing {
+      background: rgba(0, 230, 118, 0.16);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 230, 118, 0.4);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(0, 230, 118, 0); }
+    }
+
+    .next-course-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .next-course-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .next-course-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .countdown-boxes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .cd-box {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 10px 6px;
+    }
+
+    .cd-num {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      line-height: 1.2;
+    }
+
+    .cd-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ۵ کارت آمار زنده */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .stats-grid .stat-card:last-child {
+        grid-column: span 2;
+      }
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .stat-info h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .stat-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* نوار ابزار برنامه هفتگی */
+    .schedule-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .view-tabs {
+      display: flex;
+      background: var(--input-bg);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+    }
+
+    .view-tab {
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .view-tab.active {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #fff;
+    }
+
+    .day-selector-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+    .day-selector-bar::-webkit-scrollbar { display: none; }
+
+    .day-pill {
+      padding: 8px 16px;
+      border-radius: 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .day-pill.active {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.12);
+    }
+
+    /* لیست روزها و کارت درس‌ها */
+    .day-block {
+      margin-bottom: 18px;
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      background: var(--card-bg);
+      overflow: hidden;
+    }
+
+    .day-block.is-today {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    }
+
+    .day-header {
+      padding: 12px 16px;
+      background: var(--glass-highlight);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .today-tag {
+      background: var(--accent-cyan);
+      color: #050818;
+      padding: 2px 10px;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-right: 8px;
+    }
+
+    .courses-list {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .course-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-right: 5px solid var(--course-color, var(--accent-cyan));
+      gap: 12px;
+      flex-wrap: wrap;
+      transition: transform 0.2s ease;
+    }
+
+    .course-item:hover {
+      transform: translateX(-3px);
+    }
+
+    .course-main h3 {
+      font-size: 1.02rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .course-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .course-details span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .prof-badge {
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .course-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+
+    .icon-btn.delete:hover {
+      border-color: var(--accent-pink);
+      color: var(--accent-pink);
+    }
+
+    .gap-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: rgba(255, 171, 0, 0.08);
+      border: 1px dashed rgba(255, 171, 0, 0.35);
+      color: var(--accent-amber);
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    /* بنر اعلان اندروید (Heads-Up Notification) */
+    .android-heads-up {
+      position: fixed;
+      top: -160px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 24px);
+      max-width: 500px;
+      background: var(--modal-bg);
+      border: 2px solid var(--accent-cyan);
+      border-radius: 20px;
+      padding: 14px 16px;
+      z-index: 9999;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 255, 0.35);
+      transition: top 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .android-heads-up.show {
+      top: 16px;
+    }
+
+    .notif-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .notif-content {
+      flex: 1;
+    }
+
+    .notif-content h4 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+    .notif-content p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* مودال‌ها */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 6, 18, 0.78);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--modal-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 500px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform 0.2s;
+    }
+
+    .color-swatch.selected {
+      transform: scale(1.18);
+      border-color: var(--text-main);
+    }
+
+    /* فوتر شیشه‌ای و نئونی */
+    .glass-footer {
+      margin-top: 30px;
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      text-align: center;
+      font-size: 0.86rem;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .neon-pill-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 14px;
+      margin: 0 4px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(138, 92, 255, 0.25));
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .neon-pill-link:hover {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #ffffff;
+      box-shadow: 0 0 22px rgba(0, 229, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    /* نوار ناوبری پایین موبایل */
+    .bottom-nav {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 95;
+      background: var(--header-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 8px 14px;
+      display: flex;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .nav-item {
+      padding: 8px 14px;
+      border-radius: 14px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+    }
+
+    .nav-item i {
+      font-size: 1.15rem;
+    }
+
+    .nav-item.active {
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.12);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- پس‌زمینه ستاره‌ای متحرک -->
+  <canvas id="starfield"></canvas>
+
+  <!-- بنر اعلان اندروید (Heads-Up Notification) -->
+  <div id="androidHeadsUp" class="android-heads-up">
+    <div class="notif-icon-box">
+      <i class="bi bi-bell-fill"></i>
+    </div>
+    <div class="notif-content">
+      <h4 id="notifTitle">هشدار هوشمند کلاس | HAWY OS</h4>
+      <p id="notifBody">کلاس شما به زودی آغاز می‌شود.</p>
+    </div>
+    <button class="icon-btn" onclick="hideHeadsUp()" title="بستن">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="app-container">
+    <!-- هدر اصلی -->
+    <header class="top-header">
+      <div class="brand-wrap" onclick="openModal('logoModal')" title="استودیو لوگو هاوی">
+        <div class="brand-logo" id="headerLogoContainer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00e5ff"/>
+                <stop offset="100%" stop-color="#8a5cff"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="512" rx="110" fill="#050818"/>
+            <circle cx="256" cy="256" r="220" fill="none" stroke="url(#g)" stroke-width="8" opacity="0.5"/>
+            <circle cx="256" cy="256" r="180" fill="none" stroke="url(#g)" stroke-width="3" opacity="0.3" stroke-dasharray="20 30"/>
+            <path d="M160 144 V368 M352 144 V368 M160 256 H352" fill="none" stroke="url(#g)" stroke-width="34" stroke-linecap="round"/>
+            <circle cx="256" cy="256" r="46" fill="none" stroke="#00e5ff" stroke-width="12"/>
+            <circle cx="256" cy="256" r="18" fill="#8a5cff"/>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <h1>HAWY OS | هاوی</h1>
+          <p>داشبورد هوشمند دانشجویی | hawy designer</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-glass" id="themeToggleBtn" onclick="toggleTheme()">
+          <i class="bi bi-sun-fill" id="themeIcon"></i>
+          <span id="themeBtnText">تم روز</span>
+        </button>
+        <button class="btn-glass" onclick="triggerTestNotification()">
+          <i class="bi bi-bell-fill"></i>
+          <span>تست هشدار</span>
+        </button>
+        <button class="btn-glass btn-primary-neon" onclick="openCourseModal()">
+          <i class="bi bi-plus-lg"></i>
+          <span>افزودن درس</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- بخش HUD و شمارنده کلاس بعدی -->
+    <div class="hud-grid">
+      <!-- کارت وضعیت زمان و خوش‌آمدگویی -->
+      <div class="glass-card">
+        <div class="welcome-tag">
+          <i class="bi bi-cpu-fill"></i>
+          <span>طراحی و توسعه توسط هاوی (hawy designer)</span>
+        </div>
+        <h2 class="greeting-title" id="greetingText">وقت بخیر، دانشجوی عزیز!</h2>
+        <div class="persian-date">
+          <i class="bi bi-calendar3"></i>
+          <span id="persianDateText">در حال بارگذاری تاریخ...</span>
+        </div>
+
+        <div class="live-clock-box">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">ساعت رسمی سیستم</div>
+            <div class="digital-clock" id="digitalClock">۰۰:۰۰:۰۰</div>
+          </div>
+          <div style="text-align: left;">
+            <span class="badge-status badge-upcoming" id="alarmStatusBadge">
+              <i class="bi bi-shield-check"></i> رادار هشدار ۳۰ و ۱۰ دقیقه: فعال
+            </span>
+          </div>
+        </div>
+
+        <div class="day-progress-wrap">
+          <div class="day-progress-labels">
+            <span>پیشرفت زمان امروز</span>
+            <span id="dayElapsedPercent">۰٪</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="dayProgressBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- کارت شمارنده معکوس کلاس بعدی / کلاس در حال برگزاری -->
+      <div class="glass-card" id="nextClassCard">
+        <div class="countdown-header">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted);" id="nextClassHeaderLabel">
+            <i class="bi bi-broadcast"></i> ردیاب هوشمند کلاس
+          </span>
+          <span class="badge-status badge-upcoming" id="nextClassBadge">کلاس بعدی</span>
+        </div>
+
+        <h3 class="next-course-title" id="nextCourseName">در حال محاسبه...</h3>
+        <div class="next-course-meta" id="nextCourseMeta">
+          <span><i class="bi bi-clock"></i> --:--</span>
+          <span><i class="bi bi-geo-alt"></i> --</span>
+          <span><i class="bi bi-person-workspace"></i> --</span>
+        </div>
+
+        <!-- باکس ۴ تایی شمارنده معکوس -->
+        <div class="countdown-boxes" id="countdownBoxes">
+          <div class="cd-box">
+            <div class="cd-num" id="cdDays">۰</div>
+            <div class="cd-label">روز</div>
+          </div>
+          <div class="cd-box">
+            <div class="cd-num" id="cdHours">۰</div>
+            <div class="cd-label">ساعت</div>
+          </div>
+          <div class="cd-box">
+            <div class="cd-num" id="cdMinutes">۰</div>
+            <div class="cd-label">دقیقه</div>
+          </div>
+          <div class="cd-box">
+            <div class="cd-num" id="cdSeconds">۰</div>
+            <div class="cd-label">ثانیه</div>
+          </div>
+        </div>
+
+        <!-- نوار پیشرفت مخصوص کلاس در حال برگزاری -->
+        <div id="ongoingProgressContainer" style="display: none; margin-top: 12px;">
+          <div class="day-progress-labels">
+            <span id="ongoingRemainingText">زمان باقی‌مانده تا پایان کلاس</span>
+            <span id="ongoingPercentText">۰٪</span>
+          </div>
+          <div class="progress-track" style="height: 10px;">
+            <div class="progress-fill" id="ongoingProgressBar" style="background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ۵ کارت آمار زنده -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(0, 229, 255, 0.15); color: var(--accent-cyan);">
+          <i class="bi bi-calendar-check"></i>
+        </div>
+        <div class="stat-info">
+          <h4 id="statTodayClasses">۰</h4>
+          <p>کلاس‌های امروز</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(138, 92, 255, 0.15); color: var(--accent-purple);">
+          <i class="bi bi-Calendar-week"></i>
+        </div>
+        <div class="stat-info">
+          <h4 id="statWeekClasses">۰</h4>
+          <p>کل جلسات هفته</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(0, 230, 118, 0.15); color: var(--accent-green);">
+          <i class="bi bi-hourglass-split"></i>
+        </div>
+        <div class="stat-info">
+          <h4 id="statStudyHours">۰ ساعت</h4>
+          <p>ساعت حضور هفتگی</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(255, 42, 133, 0.15); color: var(--accent-pink);">
+          <i class="bi bi-journal-bookmark-fill"></i>
+        </div>
+        <div class="stat-info">
+          <h4 id="statUniqueCourses">۰</h4>
+          <p>تعداد دروس واحد</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(255, 171, 0, 0.15); color: var(--accent-amber);">
+          <i class="bi bi-cup-hot-fill"></i>
+        </div>
+        <div class="stat-info">
+          <h4 id="statNextBreak" style="font-size: 0.95rem;">--</h4>
+          <p>تایم استراحت بعدی</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- بخش جدول برنامه کلاسی -->
+    <div class="glass-card">
+      <div class="schedule-controls">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 800;">
+            <i class="bi bi-grid-1x2-fill" style="color: var(--accent-cyan);"></i>
+            برنامه کلاسی دانشگاه (شنبه تا جمعه)
+          </h2>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <div class="view-tabs">
+            <button class="view-tab active" id="tabWeekly" onclick="setScheduleView('weekly')">نمای هفتگی</button>
+            <button class="view-tab" id="tabDaily" onclick="setScheduleView('daily')">نمای روزانه</button>
+          </div>
+          <button class="btn-glass" onclick="openModal('settingsModal')" title="تنظیمات و پشتیبان‌گیری">
+            <i class="bi bi-gear-fill"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- نوار انتخاب روز در حالت روزانه -->
+      <div class="day-selector-bar" id="daySelectorBar" style="display: none;"></div>
+
+      <!-- کانتینر رندر دروس -->
+      <div id="scheduleContainer"></div>
+    </div>
+
+    <!-- فوتر کپی‌رایت -->
+    <footer class="glass-footer">
+      تمامی حقوق این سایت متعلق به
+      <a href="http://hawytech.ir" target="_blank" rel="noopener noreferrer" class="neon-pill-link">
+        <i class="bi bi-stars"></i> hawy designer
+      </a>
+      می‌باشد.
+    </footer>
+  </div>
+
+  <!-- نوار پایین موبایل -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+      <i class="bi bi-house-door-fill"></i>
+      <span>داشبورد</span>
+    </button>
+    <button class="nav-item" onclick="openCourseModal()">
+      <i class="bi bi-plus-circle-fill"></i>
+      <span>درس جدید</span>
+    </button>
+    <button class="nav-item" onclick="triggerTestNotification()">
+      <i class="bi bi-bell-fill"></i>
+      <span>تست زنگ</span>
+    </button>
+    <button class="nav-item" onclick="openModal('logoModal')">
+      <i class="bi bi-vector-pen"></i>
+      <span>لوگو</span>
+    </button>
+    <button class="nav-item" onclick="openModal('settingsModal')">
+      <i class="bi bi-sliders"></i>
+      <span>تنظیمات</span>
+    </button>
+  </nav>
+
+  <!-- مودال افزودن و ویرایش درس (همراه با نام استاد) -->
+  <div class="modal-overlay" id="courseModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="courseModalTitle" style="font-weight: 800;">افزودن درس جدید</h3>
+        <button class="icon-btn" onclick="closeModal('courseModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form id="courseForm" onsubmit="saveCourse(event)">
+        <input type="hidden" id="courseIdInput">
+        
+        <div class="form-group">
+          <label>نام درس *</label>
+          <input type="text" id="courseNameInput" class="form-control" placeholder="مثلاً: ساختمان داده" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>نام استاد</label>
+            <input type="text" id="courseProfInput" class="form-control" placeholder="مثلاً: استاد محمدی">
+          </div>
+          <div class="form-group">
+            <label>مکان / کلاس *</label>
+            <input type="text" id="courseLocationInput" class="form-control" placeholder="مثلاً: کلاس ۱۰۱" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>روز هفته *</label>
+          <select id="courseDayInput" class="form-control" required>
+            <option value="6">شنبه</option>
+            <option value="0">یکشنبه</option>
+            <option value="1">دوشنبه</option>
+            <option value="2">سه‌شنبه</option>
+            <option value="3">چهارشنبه</option>
+            <option value="4">پنج‌شنبه</option>
+            <option value="5">جمعه</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>ساعت شروع *</label>
+            <input type="time" id="courseStartInput" class="form-control" value="08:00" required>
+          </div>
+          <div class="form-group">
+            <label>ساعت پایان *</label>
+            <input type="time" id="courseEndInput" class="form-control" value="10:00" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>رنگ نئونی کارت درس</label>
+          <div class="color-swatches" id="colorSwatches"></div>
+        </div>
+
+        <div id="formErrorBox" style="display:none; color: var(--accent-pink); font-size: 0.82rem; margin-bottom: 12px; font-weight: 700;"></div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
+          <button type="button" class="btn-glass" onclick="closeModal('courseModal')">انصراف</button>
+          <button type="submit" class="btn-glass btn-primary-neon">ذخیره درس</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- مودال تایید حذف -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-card" style="max-width: 380px; text-align: center;">
+      <div style="font-size: 2.6rem; color: var(--accent-pink); margin-bottom: 8px;">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <h3 style="margin-bottom: 8px;">حذف درس از برنامه؟</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;" id="deleteCourseText">آیا از حذف این درس مطمئن هستید؟</p>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button class="btn-glass" onclick="closeModal('deleteModal')">لغو</button>
+        <button class="btn-glass" style="background: var(--accent-pink); color: #fff; border:none;" id="confirmDeleteBtn">بله، حذف شود</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- مودال استودیو لوگو (Logo Studio) -->
+  <div class="modal-overlay" id="logoModal">
+    <div class="modal-card" style="text-align: center;">
+      <div class="modal-header">
+        <h3 style="font-weight: 800;">استودیو لوگو | HAWY LOGO STUDIO</h3>
+        <button class="icon-btn" onclick="closeModal('logoModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div style="width: 180px; height: 180px; margin: 16px auto; border-radius: 38px; overflow: hidden; box-shadow: 0 0 30px rgba(0, 229, 255, 0.35);" id="studioSvgWrap">
+        <svg id="hawyMainSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+          <defs>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00e5ff"/>
+              <stop offset="100%" stop-color="#8a5cff"/>
+            </linearGradient>
+          </defs>
+          <rect width="512" height="512" rx="110" fill="#050818"/>
+          <circle cx="256" cy="256" r="220" fill="none" stroke="url(#g2)" stroke-width="8" opacity="0.5"/>
+          <circle cx="256" cy="256" r="180" fill="none" stroke="url(#g2)" stroke-width="3" opacity="0.3" stroke-dasharray="20 30"/>
+          <path d="M160 144 V368 M352 144 V368 M160 256 H352" fill="none" stroke="url(#g2)" stroke-width="34" stroke-linecap="round"/>
+          <circle cx="256" cy="256" r="46" fill="none" stroke="#00e5ff" stroke-width="12"/>
+          <circle cx="256" cy="256" r="18" fill="#8a5cff"/>
+        </svg>
+      </div>
+      <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 18px;">
+        می‌توانید لوگوی رسمی <strong>HAWY OS</strong> را با کیفیت اصلی برای آیکون فایل APK دانلود کنید.
+      </p>
+      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn-glass btn-primary-neon" onclick="downloadLogoPNG()">
+          <i class="bi bi-filetype-png"></i> دانلود PNG (۵۱۲×۵۱۲)
+        </button>
+        <button class="btn-glass" onclick="downloadLogoSVG()">
+          <i class="bi bi-filetype-svg"></i> دانلود فایل وکتور SVG
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- مودال تنظیمات، تم، هشدارها و پشتیبان‌گیری JSON -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-weight: 800;">تنظیمات سیستم، هشدار و پشتیبان‌گیری</h3>
+        <button class="icon-btn" onclick="closeModal('settingsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <!-- انتخاب تم -->
+      <div class="form-group">
+        <label>پوسته ظاهری (سازگار با Android WebView)</label>
+        <div class="form-row">
+          <button type="button" class="btn-glass" style="justify-content: center; padding: 12px;" onclick="applyTheme('dark')">
+            <i class="bi bi-moon-stars-fill" style="color: #8a5cff;"></i> تم شب فضایی
+          </button>
+          <button type="button" class="btn-glass" style="justify-content: center; padding: 12px;" onclick="applyTheme('light')">
+            <i class="bi bi-sun-fill" style="color: #d97706;"></i> تم روز مرواریدی
+          </button>
+        </div>
+      </div>
+
+      <!-- تنظیمات هشدار ۳۰ و ۱۰ دقیقه -->
+      <div class="form-group">
+        <label>تنظیمات هشدار خودکار قبل از شروع کلاس</label>
+        <div style="display: flex; flex-direction: column; gap: 8px; background: var(--input-bg); padding: 12px; border-radius: 14px; border: 1px solid var(--card-border);">
+          <label style="display: flex; align-items: center; justify-content: space-between; margin: 0; color: var(--text-main);">
+            <span>هشدار ۳۰ دقیقه قبل از شروع کلاس</span>
+            <input type="checkbox" id="chkRemind30" checked onchange="saveAlarmPrefs()">
+          </label>
+          <label style="display: flex; align-items: center; justify-content: space-between; margin: 0; color: var(--text-main);">
+            <span>هشدار ۱۰ دقیقه قبل از شروع کلاس</span>
+            <input type="checkbox" id="chkRemind10" checked onchange="saveAlarmPrefs()">
+          </label>
+          <label style="display: flex; align-items: center; justify-content: space-between; margin: 0; color: var(--text-main);">
+            <span>پخش ملودی سنتز شده + ویبره گوشی</span>
+            <input type="checkbox" id="chkSoundVibrate" checked onchange="saveAlarmPrefs()">
+          </label>
+        </div>
+      </div>
+
+      <!-- پشتیبان‌گیری و بازیابی JSON -->
+      <div class="form-group">
+        <label>پشتیبان‌گیری و بازیابی برنامه (کپی/پیست JSON مخصوص APK)</label>
+        <textarea id="jsonBackupArea" class="form-control" rows="4" style="font-size: 0.75rem; direction: ltr; font-family: monospace;" placeholder="کد JSON برنامه در اینجا قرار می‌گیرد..."></textarea>
+        <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn-glass" onclick="exportToJsonBox()">
+            <i class="bi bi-clipboard-check"></i> تولید و کپی JSON
+          </button>
+          <button type="button" class="btn-glass btn-primary-neon" onclick="importFromJsonBox()">
+            <i class="bi bi-cloud-arrow-down-fill"></i> بازیابی از JSON
+          </button>
+          <button type="button" class="btn-glass" style="color: var(--accent-amber);" onclick="resetToDefaultSchedule()">
+            <i class="bi bi-arrow-counterclockwise"></i> بازگشت به برنامه پیش‌فرض
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**************************************************************
+     * ۱. لایه ذخیره‌سازی امن برای Android WebView (safeStorage)
+     **************************************************************/
+    const memoryFallback = {};
+    const safeStorage = {
+      getItem(key) {
+        try {
+          return window.localStorage.getItem(key);
+        } catch (e) {
+          return memoryFallback[key] || null;
+        }
+      },
+      setItem(key, val) {
+        try {
+          window.localStorage.setItem(key, val);
+        } catch (e) {
+          memoryFallback[key] = String(val);
+        }
+      }
+    };
+
+    /**************************************************************
+     * ۲. تبدیل اعداد انگلیسی به ارقام فارسی
+     **************************************************************/
+    const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    function toFa(input) {
+      if (input === null || input === undefined) return '';
+      return String(input).replace(/\d/g, d => persianDigits[d]);
+    }
+
+    /**************************************************************
+     * ۳. دیتاست دقیق برنامه هفتگی دانشگاه + فیلد نام استاد
+     **************************************************************/
+    const IRAN_DAYS = [
+      { id: 6, name: 'شنبه' },
+      { id: 0, name: 'یکشنبه' },
+      { id: 1, name: 'دوشنبه' },
+      { id: 2, name: 'سه‌شنبه' },
+      { id: 3, name: 'چهارشنبه' },
+      { id: 4, name: 'پنج‌شنبه' },
+      { id: 5, name: 'جمعه' }
+    ];
+
+    const NEON_COLORS = ['#00e5ff', '#8a5cff', '#ff2a85', '#00e676', '#ffab00', '#38bdf8', '#f43f5e'];
+
+    const DEFAULT_COURSES = [
+      // شنبه (6)
+      { id: 'c1', name: 'آمار و احتمالات', professor: 'استاد مربوطه', day: 6, start: '08:00', end: '11:00', location: 'کلاس 102', color: '#00e5ff' },
+      { id: 'c2', name: 'تفسیر موضوعی قرآن', professor: 'استاد مربوطه', day: 6, start: '14:00', end: '16:00', location: 'کلاس 102', color: '#8a5cff' },
+      // یکشنبه (0)
+      { id: 'c3', name: 'ساختمان داده', professor: 'استاد مربوطه', day: 0, start: '08:00', end: '11:00', location: 'کلاس 101', color: '#00e676' },
+      { id: 'c4', name: 'مباحث ویژه', professor: 'استاد مربوطه', day: 0, start: '13:00', end: '16:00', location: 'سایت 5', color: '#ffab00' },
+      { id: 'c5', name: 'برنامه سازی پیشرفته 2', professor: 'استاد مربوطه', day: 0, start: '16:00', end: '20:00', location: 'سایت 3', color: '#ff2a85' },
+      // دوشنبه (1)
+      { id: 'c6', name: 'دوربین های مداربسته', professor: 'استاد مربوطه', day: 1, start: '09:00', end: '13:00', location: 'کارگاه برق', color: '#00e5ff' },
+      { id: 'c7', name: 'ورزش 1', professor: 'استاد مربوطه', day: 1, start: '14:00', end: '16:00', location: 'سالن ورزشی', color: '#00e676' },
+      // سه‌شنبه (2)
+      { id: 'c8', name: 'اخلاق حرفه‌ای', professor: 'استاد مربوطه', day: 2, start: '14:00', end: '16:00', location: 'کلاس 202', color: '#8a5cff' }
+    ];
+
+    let courses = [];
+    let currentView = 'weekly';
+    let selectedDayId = new Date().getDay();
+    let selectedColor = NEON_COLORS[0];
+    let firedAlarmsLog = {};
+    let alarmPrefs = { remind30: true, remind10: true, soundVibrate: true };
+
+    function loadData() {
+      const saved = safeStorage.getItem('hawy_os_courses_v2');
+      if (saved) {
+        try {
+          courses = JSON.parse(saved);
+        } catch (e) {
+          courses = JSON.parse(JSON.stringify(DEFAULT_COURSES));
+        }
+      } else {
+        courses = JSON.parse(JSON.stringify(DEFAULT_COURSES));
+      }
+
+      const savedPrefs = safeStorage.getItem('hawy_os_alarm_prefs');
+      if (savedPrefs) {
+        try {
+          alarmPrefs = JSON.parse(savedPrefs);
+          document.getElementById('chkRemind30').checked = alarmPrefs.remind30;
+          document.getElementById('chkRemind10').checked = alarmPrefs.remind10;
+          document.getElementById('chkSoundVibrate').checked = alarmPrefs.soundVibrate;
+        } catch (e) {}
+      }
+    }
+
+    function saveData() {
+      safeStorage.setItem('hawy_os_courses_v2', JSON.stringify(courses));
+      renderSchedule();
+      updateDashboardStats();
+      updateClockAndCountdown();
+    }
+
+    function saveAlarmPrefs() {
+      alarmPrefs = {
+        remind30: document.getElementById('chkRemind30').checked,
+        remind10: document.getElementById('chkRemind10').checked,
+        soundVibrate: document.getElementById('chkSoundVibrate').checked
+      };
+      safeStorage.setItem('hawy_os_alarm_prefs', JSON.stringify(alarmPrefs));
+    }
+
+    /**************************************************************
+     * ۴. موتور تغییر تم ۱۰۰٪ سازگار با Android WebView
+     **************************************************************/
+    const THEME_VARS = {
+      dark: {
+        '--bg-main': '#050818',
+        '--bg-secondary': '#0b112c',
+        '--card-bg': 'rgba(15, 23, 54, 0.72)',
+        '--card-border': 'rgba(0, 229, 255, 0.18)',
+        '--glass-highlight': 'rgba(255, 255, 255, 0.05)',
+        '--text-main': '#f8fafc',
+        '--text-muted': '#94a3b8',
+        '--accent-cyan': '#00e5ff',
+        '--accent-purple': '#8a5cff',
+        '--accent-pink': '#ff2a85',
+        '--accent-green': '#00e676',
+        '--accent-amber': '#ffab00',
+        '--shadow-glow': '0 8px 32px rgba(0, 229, 255, 0.12)',
+        '--input-bg': 'rgba(8, 13, 35, 0.85)',
+        '--header-bg': 'rgba(5, 8, 24, 0.85)',
+        '--modal-bg': '#0c1330'
+      },
+      light: {
+        '--bg-main': '#f0f5ff',
+        '--bg-secondary': '#e2ecff',
+        '--card-bg': 'rgba(255, 255, 255, 0.88)',
+        '--card-border': 'rgba(99, 102, 241, 0.22)',
+        '--glass-highlight': 'rgba(255, 255, 255, 0.7)',
+        '--text-main': '#0f172a',
+        '--text-muted': '#475569',
+        '--accent-cyan': '#0284c7',
+        '--accent-purple': '#6d28d9',
+        '--accent-pink': '#e11d48',
+        '--accent-green': '#059669',
+        '--accent-amber': '#d97706',
+        '--shadow-glow': '0 8px 28px rgba(15, 23, 42, 0.08)',
+        '--input-bg': 'rgba(241, 245, 249, 0.95)',
+        '--header-bg': 'rgba(240, 245, 255, 0.88)',
+        '--modal-bg': '#ffffff'
+      }
+    };
+
+    let activeTheme = 'dark';
+
+    function applyTheme(mode) {
+      activeTheme = mode === 'light' ? 'light' : 'dark';
+      const root = document.documentElement;
+      const body = document.body;
+
+      root.setAttribute('data-theme', activeTheme);
+      body.setAttribute('data-theme', activeTheme);
+
+      if (activeTheme === 'light') {
+        root.classList.add('light-mode');
+        body.classList.add('light-mode');
+      } else {
+        root.classList.remove('light-mode');
+        body.classList.remove('light-mode');
+      }
+
+      // تزریق مستقیم متغیرهای CSS به style برای تضمین کارکرد در تمامی WebViewهای اندروید
+      const vars = THEME_VARS[activeTheme];
+      Object.keys(vars).forEach(key => {
+        root.style.setProperty(key, vars[key]);
+      });
+
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeBtnText');
+      if (activeTheme === 'light') {
+        icon.className = 'bi bi-moon-stars-fill';
+        text.textContent = 'تم شب';
+      } else {
+        icon.className = 'bi bi-sun-fill';
+        text.textContent = 'تم روز';
+      }
+
+      safeStorage.setItem('hawy_os_theme', activeTheme);
+    }
+
+    function toggleTheme() {
+      applyTheme(activeTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    /**************************************************************
+     * ۵. توابع کمکی زمان و محاسبه فاصله‌ها
+     **************************************************************/
+    function timeToMinutes(t) {
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function formatMinutesToFa(mins) {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      if (h > 0 && m > 0) return `${toFa(h)} ساعت و ${toFa(m)} دقیقه`;
+      if (h > 0) return `${toFa(h)} ساعت`;
+      return `${toFa(m)} دقیقه`;
+    }
+
+    /**************************************************************
+     * ۶. ساعت زنده، شمارنده کلاس بعدی و رادار هشدار ۳۰ و ۱۰ دقیقه
+     **************************************************************/
+    function updateClockAndCountdown() {
+      const now = new Date();
+      const hours = now.getHours();
+      const mins = now.getMinutes();
+      const secs = now.getSeconds();
+      const currentDay = now.getDay();
+      const nowTotalMinutes = hours * 60 + mins;
+
+      // ۱. پیام خوش‌آمدگویی بر اساس ساعت
+      let greet = 'شب بخیر، دانشجوی عزیز!';
+      if (hours >= 5 && hours < 12) greet = 'صبح بخیر، دانشجوی پرانرژی!';
+      else if (hours >= 12 && hours < 17) greet = 'ظهر بخیر، خسته نباشی!';
+      else if (hours >= 17 && hours < 21) greet = 'عصر بخیر، دانشجوی عزیز!';
+      document.getElementById('greetingText').textContent = greet;
+
+      // ۲. ساعت دیجیتال فارسی
+      const clockStr = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      document.getElementById('digitalClock').textContent = toFa(clockStr);
+
+      // ۳. تاریخ شمسی
+      try {
+        const faDate = new Intl.DateTimeFormat('fa-IR', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }).format(now);
+        document.getElementById('persianDateText').textContent = faDate;
+      } catch (e) {
+        document.getElementById('persianDateText').textContent = 'تقویم رسمی ایران';
+      }
+
+      // ۴. پیشرفت روزانه
+      const dayPercent = Math.min(100, Math.round(((hours * 3600 + mins * 60 + secs) / 86400) * 100));
+      document.getElementById('dayElapsedPercent').textContent = `${toFa(dayPercent)}٪`;
+      document.getElementById('dayProgressBar').style.width = `${dayPercent}%`;
+
+      // ۵. بررسی هشدارهای ۳۰ دقیقه و ۱۰ دقیقه قبل از کلاس‌های امروز
+      checkSmartClassReminders(currentDay, nowTotalMinutes, secs);
+
+      // ۶. بررسی کلاس در حال برگزاری یا کلاس بعدی
+      const todayCourses = courses
+        .filter(c => Number(c.day) === currentDay)
+        .sort((a, b) => timeToMinutes(a.start) - timeToMinutes(b.start));
+
+      let ongoingCourse = null;
+      for (const c of todayCourses) {
+        const st = timeToMinutes(c.start);
+        const en = timeToMinutes(c.end);
+        if (nowTotalMinutes >= st && nowTotalMinutes < en) {
+          ongoingCourse = c;
+          break;
+        }
+      }
+
+      const badgeEl = document.getElementById('nextClassBadge');
+      const nameEl = document.getElementById('nextCourseName');
+      const metaEl = document.getElementById('nextCourseMeta');
+      const boxesEl = document.getElementById('countdownBoxes');
+      const ongoingWrap = document.getElementById('ongoingProgressContainer');
+
+      if (ongoingCourse) {
+        badgeEl.className = 'badge-status badge-ongoing';
+        badgeEl.textContent = 'در حال برگزاری';
+        nameEl.textContent = ongoingCourse.name;
+        metaEl.innerHTML = `
+          <span><i class="bi bi-clock"></i> ${toFa(ongoingCourse.start)} تا ${toFa(ongoingCourse.end)}</span>
+          <span><i class="bi bi-geo-alt"></i> ${toFa(ongoingCourse.location)}</span>
+          <span class="prof-badge"><i class="bi bi-person-workspace"></i> ${ongoingCourse.professor || 'ثبت نشده'}</span>
+        `;
+        boxesEl.style.display = 'none';
+        ongoingWrap.style.display = 'block';
+
+        const stSec = timeToMinutes(ongoingCourse.start) * 60;
+        const enSec = timeToMinutes(ongoingCourse.end) * 60;
+        const curSec = hours * 3600 + mins * 60 + secs;
+        const pct = Math.min(100, Math.max(0, Math.round(((curSec - stSec) / (enSec - stSec)) * 100)));
+        const remMins = Math.ceil((enSec - curSec) / 60);
+
+        document.getElementById('ongoingPercentText').textContent = `${toFa(pct)}٪`;
+        document.getElementById('ongoingProgressBar').style.width = `${pct}%`;
+        document.getElementById('ongoingRemainingText').textContent = `${formatMinutesToFa(remMins)} تا پایان کلاس`;
+        return;
+      }
+
+      boxesEl.style.display = 'grid';
+      ongoingWrap.style.display = 'none';
+      badgeEl.className = 'badge-status badge-upcoming';
+      badgeEl.textContent = 'کلاس بعدی';
+
+      // پیدا کردن نزدیک‌ترین کلاس آینده در کل هفته
+      let bestCandidate = null;
+      let minDiffSeconds = Infinity;
+      const nowSecOfDay = hours * 3600 + mins * 60 + secs;
+
+      for (const c of courses) {
+        const cStartSec = timeToMinutes(c.start) * 60;
+        let dayDiff = (Number(c.day) - currentDay + 7) % 7;
+        if (dayDiff === 0 && cStartSec <= nowSecOfDay) {
+          dayDiff = 7;
+        }
+        const totalDiffSec = dayDiff * 86400 + (cStartSec - nowSecOfDay);
+        if (totalDiffSec < minDiffSeconds) {
+          minDiffSeconds = totalDiffSec;
+          bestCandidate = c;
+        }
+      }
+
+      if (!bestCandidate) {
+        nameEl.textContent = 'هیچ کلاسی ثبت نشده است';
+        metaEl.innerHTML = '';
+        return;
+      }
+
+      const dayObj = IRAN_DAYS.find(d => d.id === Number(bestCandidate.day));
+      nameEl.textContent = bestCandidate.name;
+      metaEl.innerHTML = `
+        <span><i class="bi bi-calendar-event"></i> ${dayObj ? dayObj.name : ''} (${toFa(bestCandidate.start)})</span>
+        <span><i class="bi bi-geo-alt"></i> ${toFa(bestCandidate.location)}</span>
+        <span class="prof-badge"><i class="bi bi-person-workspace"></i> ${bestCandidate.professor || 'ثبت نشده'}</span>
+      `;
+
+      const d = Math.floor(minDiffSeconds / 86400);
+      const h = Math.floor((minDiffSeconds % 86400) / 3600);
+      const m = Math.floor((minDiffSeconds % 3600) / 60);
+      const s = minDiffSeconds % 60;
+
+      document.getElementById('cdDays').textContent = toFa(d);
+      document.getElementById('cdHours').textContent = toFa(String(h).padStart(2, '0'));
+      document.getElementById('cdMinutes').textContent = toFa(String(m).padStart(2, '0'));
+      document.getElementById('cdSeconds').textContent = toFa(String(s).padStart(2, '0'));
+    }
+
+    /**************************************************************
+     * ۷. موتور هشدار و اعلان بومی اندروید (۳۰ دقیقه و ۱۰ دقیقه قبل)
+     **************************************************************/
+    function checkSmartClassReminders(currentDay, nowTotalMinutes, secs) {
+      if (secs > 5) return; // بررسی در ثانیه‌های ابتدایی هر دقیقه
+      const todayKey = new Date().toDateString();
+
+      const todayCourses = courses.filter(c => Number(c.day) === currentDay);
+      for (const c of todayCourses) {
+        const startMins = timeToMinutes(c.start);
+        const diff = startMins - nowTotalMinutes;
+
+        // هشدار ۳۰ دقیقه قبل
+        if (diff === 30 && alarmPrefs.remind30) {
+          const key30 = `${todayKey}_${c.id}_30`;
+          if (!firedAlarmsLog[key30]) {
+            firedAlarmsLog[key30] = true;
+            dispatchSmartNotification(
+              `⏰ ۳۰ دقیقه تا شروع درس «${c.name}»`,
+              `مکان: ${toFa(c.location)} | استاد: ${c.professor || 'ثبت نشده'} | ساعت شروع: ${toFa(c.start)}`
+            );
+          }
+        }
+
+        // هشدار ۱۰ دقیقه قبل
+        if (diff === 10 && alarmPrefs.remind10) {
+          const key10 = `${todayKey}_${c.id}_10`;
+          if (!firedAlarmsLog[key10]) {
+            firedAlarmsLog[key10] = true;
+            dispatchSmartNotification(
+              `🚨 فقط ۱۰ دقیقه تا شروع «${c.name}» باقی مانده!`,
+              `سریع‌تر در ${toFa(c.location)} حاضر شوید (استاد: ${c.professor || 'ثبت نشده'}).`
+            );
+          }
+        }
+      }
+    }
+
+    // تولید صدای زنگ فضایی با Web Audio API (بدون نیاز به فایل MP3 خارجی)
+    function playFuturisticChime() {
+      if (!alarmPrefs.soundVibrate) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const notes = [587.33, 880, 1174.66, 1567.98]; // نت‌های زنگ هشدار شفاف
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.14);
+          gain.gain.setValueAtTime(0.22, ctx.currentTime + idx * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.14 + 0.45);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.14);
+          osc.stop(ctx.currentTime + idx * 0.14 + 0.46);
+        });
+      } catch (e) {}
+    }
+
+    let headsUpTimeout = null;
+    function dispatchSmartNotification(title, message) {
+      // ۱. نمایش بنر کشویی بالای صفحه (تضمین ۱۰۰٪ در تمامی WebViewهای اندروید)
+      document.getElementById('notifTitle').textContent = title;
+      document.getElementById('notifBody').textContent = message;
+      const banner = document.getElementById('androidHeadsUp');
+      banner.classList.add('show');
+      clearTimeout(headsUpTimeout);
+      headsUpTimeout = setTimeout(() => banner.classList.remove('show'), 8000);
+
+      // ۲. پخش صدای سنتزشده و ویبره گوشی
+      playFuturisticChime();
+      if (alarmPrefs.soundVibrate && navigator.vibrate) {
+        try { navigator.vibrate([300, 150, 400, 150, 500]); } catch (e) {}
+      }
+
+      // ۳. ارسال به پل ارتباطی جاوا در APK (در صورت وجود در WebView)
+      try {
+        if (window.Android && typeof window.Android.showNotification === 'function') {
+          window.Android.showNotification(title, message);
+        } else if (window.AndroidInterface && typeof window.AndroidInterface.createNotification === 'function') {
+          window.AndroidInterface.createNotification(title, message);
+        }
+      } catch (e) {}
+
+      // ۴. ارسال به Web Notifications API استاندارد (در صورت مجوز)
+      try {
+        if ('Notification' in window) {
+          if (Notification.permission === 'granted') {
+            new Notification(title, { body: message });
+          } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(p => {
+              if (p === 'granted') new Notification(title, { body: message });
+            });
+          }
+        }
+      } catch (e) {}
+    }
+
+    function hideHeadsUp() {
+      document.getElementById('androidHeadsUp').classList.remove('show');
+    }
+
+    function triggerTestNotification() {
+      dispatchSmartNotification(
+        '🔔 تست سیستم هشدار HAWY OS',
+        'اعلان صوتی، ویبره و بنر هشدار ۳۰ و ۱۰ دقیقه قبل از کلاس با موفقیت در اندروید فعال است!'
+      );
+    }
+
+    /**************************************************************
+     * ۸. رندر جدول برنامه کلاسی و محاسبه تایم‌های خالی بین کلاس‌ها
+     **************************************************************/
+    function setScheduleView(view) {
+      currentView = view;
+      document.getElementById('tabWeekly').classList.toggle('active', view === 'weekly');
+      document.getElementById('tabDaily').classList.toggle('active', view === 'daily');
+      document.getElementById('daySelectorBar').style.display = view === 'daily' ? 'flex' : 'none';
+      renderDaySelectorPills();
+      renderSchedule();
+    }
+
+    function renderDaySelectorPills() {
+      const bar = document.getElementById('daySelectorBar');
+      bar.innerHTML = IRAN_DAYS.map(d => `
+        <button class="day-pill ${d.id === selectedDayId ? 'active' : ''}" onclick="selectDayPill(${d.id})">
+          ${d.name}
+        </button>
+      `).join('');
+    }
+
+    function selectDayPill(dayId) {
+      selectedDayId = dayId;
+      renderDaySelectorPills();
+      renderSchedule();
+    }
+
+    function getCourseStatusBadge(dayId, startStr, endStr) {
+      const now = new Date();
+      const todayId = now.getDay();
+      if (dayId !== todayId) return '';
+
+      const nowMins = now.getHours() * 60 + now.getMinutes();
+      const st = timeToMinutes(startStr);
+      const en = timeToMinutes(endStr);
+
+      if (nowMins >= st && nowMins < en) {
+        return `<span class="badge-status badge-ongoing">در حال برگزاری</span>`;
+      } else if (nowMins < st) {
+        return `<span class="badge-status badge-upcoming">در انتظار شروع</span>`;
+      } else {
+        return `<span class="badge-status" style="background:rgba(148,163,184,0.15); color:var(--text-muted);">برگزار شده</span>`;
+      }
+    }
+
+    function renderSchedule() {
+      const container = document.getElementById('scheduleContainer');
+      const todayId = new Date().getDay();
+      const daysToShow = currentView === 'weekly'
+        ? IRAN_DAYS
+        : IRAN_DAYS.filter(d => d.id === selectedDayId);
+
+      let html = '';
+
+      for (const day of daysToShow) {
+        const dayCourses = courses
+          .filter(c => Number(c.day) === day.id)
+          .sort((a, b) => timeToMinutes(a.start) - timeToMinutes(b.start));
+
+        const isToday = day.id === todayId;
+
+        html += `
+          <div class="day-block ${isToday ? 'is-today' : ''}">
+            <div class="day-header">
+              <div>
+                <span>${day.name}</span>
+                ${isToday ? '<span class="today-tag">امروز</span>' : ''}
+              </div>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">
+                ${dayCourses.length > 0 ? `${toFa(dayCourses.length)} کلاس` : 'بدون کلاس (آزاد)'}
+              </span>
+            </div>
+            <div class="courses-list">
+        `;
+
+        if (dayCourses.length === 0) {
+          html += `
+            <div style="text-align: center; padding: 14px; color: var(--text-muted); font-size: 0.84rem;">
+              <i class="bi bi-emoji-sunglasses"></i> هیچ کلاسی برای این روز ثبت نشده است.
+            </div>
+          `;
+        } else {
+          dayCourses.forEach((c, idx) => {
+            // محاسبه تایم خالی (Free Period Gap) بین دو کلاس متوالی در یک روز
+            if (idx > 0) {
+              const prevEnd = timeToMinutes(dayCourses[idx - 1].end);
+              const currStart = timeToMinutes(c.start);
+              const gapMins = currStart - prevEnd;
+              if (gapMins > 0) {
+                html += `
+                  <div class="gap-divider">
+                    <i class="bi bi-cup-hot"></i>
+                    <span>تایم آزاد و استراحت بین دو کلاس: ${formatMinutesToFa(gapMins)} (${toFa(dayCourses[idx - 1].end)} تا ${toFa(c.start)})</span>
+                  </div>
+                `;
+              }
+            }
+
+            const durationMins = timeToMinutes(c.end) - timeToMinutes(c.start);
+            html += `
+              <div class="course-item" style="--course-color: ${c.color || '#00e5ff'}">
+                <div class="course-main">
+                  <h3>
+                    <span>${c.name}</span>
+                    ${getCourseStatusBadge(day.id, c.start, c.end)}
+                  </h3>
+                  <div class="course-details">
+                    <span><i class="bi bi-clock-fill" style="color:${c.color}"></i> ${toFa(c.start)} تا ${toFa(c.end)} (${formatMinutesToFa(durationMins)})</span>
+                    <span><i class="bi bi-geo-alt-fill"></i> ${toFa(c.location)}</span>
+                    <span class="prof-badge"><i class="bi bi-person-badge-fill"></i> ${c.professor ? c.professor : 'استاد ثبت نشده'}</span>
+                  </div>
+                </div>
+                <div class="course-actions">
+                  <button class="icon-btn" onclick="openCourseModal('${c.id}')" title="ویرایش درس و نام استاد">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="icon-btn delete" onclick="confirmDeleteCourse('${c.id}')" title="حذف درس">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+        }
+
+        html += `</div></div>`;
+      }
+
+      container.innerHTML = html;
+    }
+
+    /**************************************************************
+     * ۹. محاسبه ۵ کارت آمار زنده
+     **************************************************************/
+    function updateDashboardStats() {
+      const todayId = new Date().getDay();
+      const todayList = courses.filter(c => Number(c.day) === todayId);
+
+      // ۱. کلاس‌های امروز
+      document.getElementById('statTodayClasses').textContent = `${toFa(todayList.length)} جلسه`;
+
+      // ۲. کل کلاس‌های هفته
+      document.getElementById('statWeekClasses').textContent = `${toFa(courses.length)} جلسه`;
+
+      // ۳. مجموع ساعات حضور هفتگی
+      let totalMins = 0;
+      courses.forEach(c => {
+        totalMins += Math.max(0, timeToMinutes(c.end) - timeToMinutes(c.start));
+      });
+      const totalHours = (totalMins / 60).toFixed(1).replace('.0', '');
+      document.getElementById('statStudyHours').textContent = `${toFa(totalHours)} ساعت`;
+
+      // ۴. تعداد دروس یکتا
+      const uniqueNames = new Set(courses.map(c => c.name.trim()));
+      document.getElementById('statUniqueCourses').textContent = `${toFa(uniqueNames.size)} عنوان`;
+
+      // ۵. تایم استراحت بعدی
+      let nextBreakStr = 'روز آزاد';
+      for (const d of IRAN_DAYS) {
+        const list = courses
+          .filter(c => Number(c.day) === d.id)
+          .sort((a, b) => timeToMinutes(a.start) - timeToMinutes(b.start));
+        for (let i = 1; i < list.length; i++) {
+          const gap = timeToMinutes(list[i].start) - timeToMinutes(list[i - 1].end);
+          if (gap > 0) {
+            nextBreakStr = `${d.name} (${toFa(list[i - 1].end)} تا ${toFa(list[i].start)})`;
+            break;
+          }
+        }
+        if (nextBreakStr !== 'روز آزاد') break;
+      }
+      document.getElementById('statNextBreak').textContent = nextBreakStr;
+    }
+
+    /**************************************************************
+     * ۱۰. مدیریت افزودن، ویرایش، تشخیص تداخل زمانی و حذف درس‌ها
+     **************************************************************/
+    function renderColorSwatches() {
+      const wrap = document.getElementById('colorSwatches');
+      wrap.innerHTML = NEON_COLORS.map(c => `
+        <div class="color-swatch ${c === selectedColor ? 'selected' : ''}"
+             style="background:${c}"
+             onclick="selectSwatch('${c}')"></div>
+      `).join('');
+    }
+
+    function selectSwatch(c) {
+      selectedColor = c;
+      renderColorSwatches();
+    }
+
+    function openCourseModal(courseId = null) {
+      document.getElementById('formErrorBox').style.display = 'none';
+      if (courseId) {
+        const c = courses.find(item => item.id === courseId);
+        if (!c) return;
+        document.getElementById('courseModalTitle').textContent = 'ویرایش درس و نام استاد';
+        document.getElementById('courseIdInput').value = c.id;
+        document.getElementById('courseNameInput').value = c.name;
+        document.getElementById('courseProfInput').value = c.professor || '';
+        document.getElementById('courseLocationInput').value = c.location;
+        document.getElementById('courseDayInput').value = c.day;
+        document.getElementById('courseStartInput').value = c.start;
+        document.getElementById('courseEndInput').value = c.end;
+        selectedColor = c.color || NEON_COLORS[0];
+      } else {
+        document.getElementById('courseModalTitle').textContent = 'افزودن درس جدید';
+        document.getElementById('courseForm').reset();
+        document.getElementById('courseIdInput').value = '';
+        selectedColor = NEON_COLORS[0];
+      }
+      renderColorSwatches();
+      openModal('courseModal');
+    }
+
+    function saveCourse(e) {
+      e.preventDefault();
+      const id = document.getElementById('courseIdInput').value;
+      const name = document.getElementById('courseNameInput').value.trim();
+      const professor = document.getElementById('courseProfInput').value.trim() || 'استاد مربوطه';
+      const location = document.getElementById('courseLocationInput').value.trim();
+      const day = Number(document.getElementById('courseDayInput').value);
+      const start = document.getElementById('courseStartInput').value;
+      const end = document.getElementById('courseEndInput').value;
+
+      const errBox = document.getElementById('formErrorBox');
+      const stMins = timeToMinutes(start);
+      const enMins = timeToMinutes(end);
+
+      if (enMins <= stMins) {
+        errBox.textContent = 'خطا: ساعت پایان کلاس باید بعد از ساعت شروع باشد!';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      // بررسی تداخل زمانی با سایر دروس همان روز
+      const overlap = courses.find(c => {
+        if (c.id === id || Number(c.day) !== day) return false;
+        const cSt = timeToMinutes(c.start);
+        const cEn = timeToMinutes(c.end);
+        return stMins < cEn && enMins > cSt;
+      });
+
+      if (overlap) {
+        errBox.textContent = `هشدار تداخل زمانی: این ساعت با درس «${overlap.name}» (${toFa(overlap.start)} تا ${toFa(overlap.end)}) تداخل دارد!`;
+        errBox.style.display = 'block';
+        return;
+      }
+
+      if (id) {
+        const idx = courses.findIndex(c => c.id === id);
+        if (idx > -1) {
+          courses[idx] = { id, name, professor, location, day, start, end, color: selectedColor };
+        }
+      } else {
+        courses.push({
+          id: 'c_' + Date.now(),
+          name,
+          professor,
+          location,
+          day,
+          start,
+          end,
+          color: selectedColor
+        });
+      }
+
+      saveData();
+      closeModal('courseModal');
+    }
+
+    let pendingDeleteId = null;
+    function confirmDeleteCourse(id) {
+      const c = courses.find(item => item.id === id);
+      if (!c) return;
+      pendingDeleteId = id;
+      document.getElementById('deleteCourseText').textContent = `آیا از حذف درس «${c.name}» مطمئن هستید؟`;
+      document.getElementById('confirmDeleteBtn').onclick = () => {
+        courses = courses.filter(item => item.id !== pendingDeleteId);
+        saveData();
+        closeModal('deleteModal');
+      };
+      openModal('deleteModal');
+    }
+
+    /**************************************************************
+     * ۱۱. پشتیبان‌گیری JSON و استودیو دانلود لوگو (SVG / PNG)
+     **************************************************************/
+    function openModal(id) {
+      if (id === 'settingsModal') {
+        document.getElementById('jsonBackupArea').value = JSON.stringify(courses);
+      }
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function exportToJsonBox() {
+      const box = document.getElementById('jsonBackupArea');
+      box.value = JSON.stringify(courses, null, 2);
+      box.select();
+      try { navigator.clipboard.writeText(box.value); } catch (e) {}
+      dispatchSmartNotification('پشتیبان‌گیری انجام شد', 'کد JSON برنامه در باکس کپی شد.');
+    }
+
+    function importFromJsonBox() {
+      const raw = document.getElementById('jsonBackupArea').value.trim();
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          courses = parsed;
+          saveData();
+          closeModal('settingsModal');
+          dispatchSmartNotification('بازیابی موفق', 'برنامه کلاسی شما با موفقیت بارگذاری شد.');
+        }
+      } catch (e) {
+        alert('کد JSON وارد شده معتبر نیست!');
+      }
+    }
+
+    function resetToDefaultSchedule() {
+      courses = JSON.parse(JSON.stringify(DEFAULT_COURSES));
+      saveData();
+      closeModal('settingsModal');
+      dispatchSmartNotification('برنامه پیش‌فرض', 'برنامه رسمی دانشگاه بازنشانی شد.');
+    }
+
+    function getCleanSvgString() {
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#8a5cff"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="#050818"/><circle cx="256" cy="256" r="220" fill="none" stroke="url(#g)" stroke-width="8" opacity="0.5"/><circle cx="256" cy="256" r="180" fill="none" stroke="url(#g)" stroke-width="3" opacity="0.3" stroke-dasharray="20 30"/><path d="M160 144 V368 M352 144 V368 M160 256 H352" fill="none" stroke="url(#g)" stroke-width="34" stroke-linecap="round"/><circle cx="256" cy="256" r="46" fill="none" stroke="#00e5ff" stroke-width="12"/><circle cx="256" cy="256" r="18" fill="#8a5cff"/></svg>`;
+    }
+
+    function downloadLogoSVG() {
+      const blob = new Blob([getCleanSvgString()], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'hawy-os-logo.svg';
+      a.click();
+    }
+
+    function downloadLogoPNG() {
+      const img = new Image();
+      const svgBlob = new Blob([getCleanSvgString()], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 512, 512);
+        URL.revokeObjectURL(url);
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'hawy-os-icon-512.png';
+        a.click();
+      };
+      img.src = url;
+    }
+
+    /**************************************************************
+     * ۱۲. پس‌زمینه ستاره‌ای هوشمند (واکنش‌گرا به تم روز و شب)
+     **************************************************************/
+    function initStarfield() {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stars = Array.from({ length: 65 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.8 + 0.5,
+          vx: (Math.random() - 0.5) * 0.25,
+          vy: (Math.random() - 0.5) * 0.25
+        }));
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = activeTheme === 'light' ? 'rgba(99, 102, 241, 0.28)' : 'rgba(0, 229, 255, 0.55)';
+        for (const s of stars) {
+          s.x += s.vx;
+          s.y += s.vy;
+          if (s.x < 0) s.x = canvas.width;
+          if (s.x > canvas.width) s.x = 0;
+          if (s.y < 0) s.y = canvas.height;
+          if (s.y > canvas.height) s.y = 0;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // فعال‌سازی Wake Lock برای بیدار نگه داشتن تایمر در اندروید
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          await navigator.wakeLock.request('screen');
+        }
+      } catch (e) {}
+    }
+
+    // راه‌اندازی اولیه سیستم‌عامل HAWY OS
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = safeStorage.getItem('hawy_os_theme') || 'dark';
+      applyTheme(savedTheme);
+      loadData();
+      renderSchedule();
+      updateDashboardStats();
+      updateClockAndCountdown();
+      initStarfield();
+      requestWakeLock();
+      setInterval(updateClockAndCountdown, 1000);
+    });
+  </script>
+</body>
+</html>
